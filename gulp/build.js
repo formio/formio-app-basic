@@ -11,6 +11,7 @@ var $ = require('gulp-load-plugins')({
 gulp.task('partials', function () {
   return gulp.src([
     path.join(conf.paths.src, '/app/**/*.html'),
+    path.join(conf.paths.src, '/views/**/*.html'),
     path.join(conf.paths.tmp, '/serve/app/**/*.html')
   ])
     .pipe($.minifyHtml({
@@ -19,7 +20,7 @@ gulp.task('partials', function () {
       quotes: true
     }))
     .pipe($.angularTemplatecache('templateCacheHtml.js', {
-      module: 'formioAppTemplate',
+      module: 'formioAppBasic',
       root: 'app'
     }))
     .pipe(gulp.dest(conf.paths.tmp + '/partials/'));
@@ -95,8 +96,14 @@ gulp.task('config', function() {
   return gulp.src(path.join(conf.paths.src, '/config.js')).pipe(gulp.dest(path.join(conf.paths.dist, '/')));
 });
 
+gulp.task('views', function() {
+  return gulp.src([
+    path.join(conf.paths.src, '/views/**/*')
+  ]).pipe(gulp.dest(path.join(conf.paths.dist, '/views/')));
+});
+
 gulp.task('clean', function () {
   return $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')]);
 });
 
-gulp.task('build', ['html', 'config', 'fonts', 'other']);
+gulp.task('build', ['html', 'config', 'views', 'fonts', 'other']);
