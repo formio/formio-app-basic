@@ -40,6 +40,9 @@
               <ul class="nav navbar-nav">
                 <li class="active"><a ui-sref="home">Home</a></li>
               </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li ng-if="authenticated"><a href="#" ng-click="logout()"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout</a></li>
+              </ul>
             </div><!--/.nav-collapse -->
           </div>
         </nav>
