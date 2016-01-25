@@ -10,7 +10,8 @@
     "moment": "~2.11.0",
     "animate.css": "~3.5.1",
     "angular": "~1.4.8",
-    "formio": "~0.7.0"
+    "formio": "~0.7.0",
+    "angular-paginate-anything": "~4.1.2"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.2"
