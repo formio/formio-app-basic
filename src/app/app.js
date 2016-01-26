@@ -6,6 +6,17 @@
     'ui.bootstrap',
     'formio'
   ])
+  .filter('capitalize', [function() {
+    return _.capitalize;
+  }])
+  .filter('truncate', [function() {
+    return function(input, opts) {
+      if(_.isNumber(opts)) {
+        opts = {length: opts};
+      }
+      return _.truncate(input, opts);
+    };
+  }])
   .provider('Resource', [
     '$stateProvider',
     function(
@@ -83,7 +94,7 @@
               abstract: true,
               url: '/' + name + '/:' + queryId,
               parent: parent ? parent : null,
-              templateUrl: 'views/resource.html',
+              templateUrl: 'views/resource/resource.html',
               controller: controller(function($scope, $rootScope, $state, $stateParams, Formio, FormioUtils, $controller) {
                 var submissionUrl = url + '/submission/' + $stateParams[queryId];
                 $scope.currentResource = $scope[name] = {
@@ -152,12 +163,7 @@
                 }
                 if (!handle) {
                   $scope.$on('delete', function() {
-                    if (parent && parent !== 'home') {
-                      $state.go(parent + '.view');
-                    }
-                    else {
-                      $state.go('home', null, {reload: true});
-                    }
+                    $state.go(name + 'Index');
                   });
                 }
               })
@@ -173,12 +179,16 @@
     '$stateProvider',
     '$urlRouterProvider',
     'FormioProvider',
+    'ResourceProvider',
     'AppConfig',
+    '$injector',
     function(
       $stateProvider,
       $urlRouterProvider,
       FormioProvider,
-      AppConfig
+      ResourceProvider,
+      AppConfig,
+      $injector
     ) {
       FormioProvider.setBaseUrl(AppConfig.apiUrl);
 
@@ -233,42 +243,51 @@
           ]
         });
 
+      angular.forEach(AppConfig.resources, function(resource, name) {
+        ResourceProvider.register(name, resource.form, $injector.get(resource.resource + 'Provider'));
+      });
+
       $urlRouterProvider.otherwise('/');
     }
   ])
-  .factory('FormioAlerts', function () {
-    var alerts = [];
-    return {
-      addAlert: function (alert) {
-        alerts.push(alert);
-        if (alert.element) {
-          angular.element('#form-group-' + alert.element).addClass('has-error');
+  .factory('FormioAlerts', [
+    '$rootScope',
+    function (
+      $rootScope
+    ) {
+      var alerts = [];
+      return {
+        addAlert: function (alert) {
+          $rootScope.alerts.push(alert);
+          if (alert.element) {
+            angular.element('#form-group-' + alert.element).addClass('has-error');
+          }
+          else {
+            alerts.push(alert);
+          }
+        },
+        getAlerts: function () {
+          var tempAlerts = angular.copy(alerts);
+          alerts.length = 0;
+          alerts = [];
+          return tempAlerts;
+        },
+        onError: function showError(error) {
+          if (error.message) {
+            this.addAlert({
+              type: 'danger',
+              message: error.message,
+              element: error.path
+            });
+          }
+          else {
+            var errors = error.hasOwnProperty('errors') ? error.errors : error.data.errors;
+            angular.forEach(errors, showError.bind(this));
+          }
         }
-        else {
-          alerts.push(alert);
-        }
-      },
-      getAlerts: function () {
-        var tempAlerts = angular.copy(alerts);
-        alerts.length = 0;
-        alerts = [];
-        return tempAlerts;
-      },
-      onError: function showError(error) {
-        if (error.message) {
-          this.addAlert({
-            type: 'danger',
-            message: error.message,
-            element: error.path
-          });
-        }
-        else {
-          var errors = error.hasOwnProperty('errors') ? error.errors : error.data.errors;
-          angular.forEach(errors, showError.bind(this));
-        }
-      }
-    };
-  })
+      };
+    }
+  ])
   .run([
     '$rootScope',
     '$state',
@@ -284,9 +303,9 @@
       AppConfig,
       FormioAlerts
     ) {
-      $rootScope.userForm = AppConfig.forms.userForm;
-      $rootScope.userRegisterForm = AppConfig.forms.userRegisterForm;
-      $rootScope.userLoginForm = AppConfig.forms.userLoginForm;
+      $rootScope.userForm = AppConfig.forms.user;
+      $rootScope.userRegisterForm = AppConfig.forms.userRegister;
+      $rootScope.userLoginForm = AppConfig.forms.userLogin;
 
       // Add the forms to the root scope.
       angular.forEach(AppConfig.forms, function(url, form) {
@@ -300,24 +319,25 @@
         });
       }
 
-      var logoutError = function() {
-        $state.go('auth.login');
-        FormioAlerts.addAlert({
-          type: 'danger',
-          message: 'Your session has expired. Please log in again.'
-        });
+      var logoutError = function(message) {
+        return function() {
+          localStorage.removeItem('formioUser');
+          localStorage.removeItem('formioToken');
+          $state.go('auth.login');
+          FormioAlerts.addAlert({
+            type: 'danger',
+            message: message
+          });
+        };
       };
 
-      $rootScope.$on('formio.sessionExpired', logoutError);
-      $rootScope.$on('formio.unauthorized', function() {
-        $state.go('auth.login');
-      });
+      $rootScope.$on('formio.sessionExpired', logoutError('Your session has expired. Please log in again.'));
 
       // Trigger when a logout occurs.
       $rootScope.logout = function() {
         Formio.logout().then(function() {
           $state.go('auth.login');
-        }).catch(logoutError);
+        }).catch(logoutError('Your session has expired. Please log in again.'));
       };
 
       // Determine if the current state is active.
@@ -334,6 +354,11 @@
           event.preventDefault();
           $state.go('auth.login');
         }
+      });
+
+      // Show alerts when we need to.
+      $rootScope.$on('$stateChangeSuccess', function() {
+        $rootScope.alerts = FormioAlerts.getAlerts();
       });
     }
   ]);

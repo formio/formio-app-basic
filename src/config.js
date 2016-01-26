@@ -17,5 +17,11 @@ angular.module('formioAppBasic').constant('AppConfig', {
     userForm: APP_URL + '/user',
     userLoginForm: APP_URL + '/user/login',
     userRegisterForm: APP_URL + '/user/register'
+  },
+  resources: {
+    user: {
+      form: APP_URL + '/user',
+      resource: 'UserResource'
+    }
   }
 });
