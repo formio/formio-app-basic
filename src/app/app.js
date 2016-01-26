@@ -37,6 +37,7 @@
             return ['$scope', '$rootScope', '$state', '$stateParams', 'Formio', 'FormioUtils', '$controller', ctrl];
           };
 
+          var controllers = (options && options.controllers) ? options.controllers : {};
           var templates = (options && options.templates) ? options.templates : {};
           $stateProvider
             .state(name + 'Index', {
@@ -61,8 +62,8 @@
                 $scope.$on('submissionDelete', function(event, submission) {
                   $state.go(name + '.delete', query(submission));
                 });
-                if (options && options.index) {
-                  $controller(options.index, {$scope: $scope});
+                if (controllers.index) {
+                  $controller(controllers.index, {$scope: $scope});
                 }
               })
             })
@@ -79,8 +80,8 @@
                 };
                 $scope.submission = {data: {}};
                 var handle = false;
-                if (options && options.create) {
-                  var ctrl = $controller(options.create, {$scope: $scope});
+                if (controllers.create) {
+                  var ctrl = $controller(controllers.create, {$scope: $scope});
                   handle = (ctrl.handle || false);
                 }
                 if (!handle) {
@@ -116,8 +117,8 @@
                   $scope.currentResource.resource = $scope[name].submission = submission;
                 });
 
-                if (options && options.abstract) {
-                  $controller(options.abstract, {$scope: $scope});
+                if (controllers.abstract) {
+                  $controller(controllers.abstract, {$scope: $scope});
                 }
               })
             })
@@ -127,8 +128,8 @@
               params: options.params && options.params.view,
               templateUrl: templates.view ? templates.view : 'views/resource/view.html',
               controller: controller(function($scope, $rootScope, $state, $stateParams, Formio, FormioUtils, $controller) {
-                if (options && options.view) {
-                  $controller(options.view, {$scope: $scope});
+                if (controllers.view) {
+                  $controller(controllers.view, {$scope: $scope});
                 }
               })
             })
@@ -139,8 +140,8 @@
               templateUrl: templates.edit ? templates.edit : 'views/resource/edit.html',
               controller: controller(function($scope, $rootScope, $state, $stateParams, Formio, FormioUtils, $controller) {
                 var handle = false;
-                if (options && options.edit) {
-                  var ctrl = $controller(options.edit, {$scope: $scope});
+                if (controllers.edit) {
+                  var ctrl = $controller(controllers.edit, {$scope: $scope});
                   handle = (ctrl.handle || false);
                 }
                 if (!handle) {
@@ -157,8 +158,8 @@
               templateUrl: templates.delete ? templates.delete : 'views/resource/delete.html',
               controller: controller(function($scope, $rootScope, $state, $stateParams, Formio, FormioUtils, $controller) {
                 var handle = false;
-                if (options && options.delete) {
-                  var ctrl = $controller(options.delete, {$scope: $scope});
+                if (controllers.delete) {
+                  var ctrl = $controller(controllers.delete, {$scope: $scope});
                   handle = (ctrl.handle || false);
                 }
                 if (!handle) {

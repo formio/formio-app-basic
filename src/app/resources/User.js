@@ -10,28 +10,59 @@ angular.module('formioAppBasic')
   .provider('UserResource', function() {
     return {
       $get: function() { return null; },
-      index: ['$scope', '$stateParams', function($scope, $stateParams) {
-      }],
-      abstract: ['$scope', '$stateParams', function($scope, $stateParams) {
-      }],
-      view: ['$scope', '$stateParams', function($scope, $stateParams) {
-      }],
-      create: ['$scope', '$state', function($scope, $state) {
-        $scope.$on('formSubmission', function(err, submission) {
-          // Do something here...
-          console.log(submission);
-        });
-      }],
-      edit: ['$scope', '$stateParams', function($scope, $stateParams) {
-        $scope.$on('formSubmission', function(err, submission) {
-          // Do something here...
-          console.log(submission);
-        });
-      }],
-      delete: ['$scope', '$stateParams', function($scope, $stateParams) {
-        $scope.$on('delete', function(err) {
-          // Do something here...
-        });
-      }]
+
+      /**
+       * Allow for nested resources by setting the parent to another resource.
+       */
+      parent: null,
+
+      /**
+       * Allow you to change the template for any view of this resource.
+       */
+      templates: {
+        index: '',
+        view: '',
+        create: '',
+        edit: '',
+        delete: ''
+      },
+
+      /**
+       * Provide customer parameters to each of the operations for this resource.
+       */
+      params: {
+        index: {},
+        view: {},
+        create: {},
+        edit: {},
+        delete: {}
+      },
+
+      /**
+       * Provide custom controllers for each operation on a resource.
+       */
+      controllers: {
+        index: null,
+        abstract: null,
+        view: null,
+        create: ['$scope', function($scope) {
+          $scope.$on('formSubmission', function(err, submission) {
+            // A submission has been made... Do something...
+            console.log(submission);
+          });
+        }],
+        edit: ['$scope', function($scope) {
+          $scope.$on('formSubmission', function(err, submission) {
+            // A submission was updated... Do something...
+            console.log(submission);
+          });
+        }],
+        delete: ['$scope', '$stateParams', function($scope, $stateParams) {
+          $scope.$on('delete', function(err) {
+            // A submission was deleted.
+            console.log('Submission Deleted');
+          });
+        }]
+      }
     };
   });
