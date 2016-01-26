@@ -13,9 +13,6 @@ angular.module('formioAppBasic').run([
     AppConfig,
     FormioAlerts
   ) {
-    $rootScope.userForm = AppConfig.forms.user;
-    $rootScope.userRegisterForm = AppConfig.forms.userRegister;
-    $rootScope.userLoginForm = AppConfig.forms.userLogin;
 
     // Add the forms to the root scope.
     angular.forEach(AppConfig.forms, function(url, form) {
