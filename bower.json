@@ -12,7 +12,8 @@
     "angular": "~1.4.8",
     "formio": "~0.7.0",
     "angular-paginate-anything": "~4.1.2",
-    "lodash": "~4.0.1"
+    "lodash": "~4.0.1",
+    "ng-formio-helper": "*"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.2"

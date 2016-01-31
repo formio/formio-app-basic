@@ -4,12 +4,14 @@
     'ngSanitize',
     'ui.router',
     'ui.bootstrap',
-    'formio'
+    'formio',
+    'ngFormioHelper'
   ])
   .config([
     '$stateProvider',
     '$urlRouterProvider',
     'FormioProvider',
+    'FormioAuthProvider',
     'ResourceProvider',
     'AppConfig',
     '$injector',
@@ -17,61 +19,21 @@
       $stateProvider,
       $urlRouterProvider,
       FormioProvider,
+      FormioAuthProvider,
       ResourceProvider,
       AppConfig,
       $injector
     ) {
       FormioProvider.setBaseUrl(AppConfig.apiUrl);
+      FormioAuthProvider.setForceAuth(true);
+      FormioAuthProvider.setStates('auth.login', 'home');
+      FormioAuthProvider.register('login', 'user', 'login');
+      FormioAuthProvider.register('register', 'user', 'register');
 
       $stateProvider
         .state('home', {
           url: '/',
           templateUrl: 'views/home.html'
-        })
-        .state('auth', {
-          abstract: true,
-          url: '/auth',
-          templateUrl: 'views/user/auth.html'
-        })
-        .state('auth.login', {
-          url: '/login',
-          templateUrl: 'views/user/login.html',
-          controller: [
-            '$scope',
-            '$state',
-            '$rootScope',
-            function(
-              $scope,
-              $state,
-              $rootScope
-            ) {
-              $scope.$on('formSubmission', function(err, submission) {
-                if (!submission) { return; }
-                $rootScope.user = submission;
-                $state.go('home');
-              });
-            }
-          ]
-        })
-        .state('auth.register', {
-          url: '/register',
-          templateUrl: 'views/user/register.html',
-          controller: [
-            '$scope',
-            '$state',
-            '$rootScope',
-            function(
-              $scope,
-              $state,
-              $rootScope
-            ) {
-              $scope.$on('formSubmission', function(err, submission) {
-                if (!submission) { return; }
-                $rootScope.user = submission;
-                $state.go('home');
-              });
-            }
-          ]
         });
 
       // Register all of the resources.
