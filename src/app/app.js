@@ -12,7 +12,7 @@
     '$urlRouterProvider',
     'FormioProvider',
     'FormioAuthProvider',
-    'ResourceProvider',
+    'FormioResourceProvider',
     'AppConfig',
     '$injector',
     function(
@@ -20,7 +20,7 @@
       $urlRouterProvider,
       FormioProvider,
       FormioAuthProvider,
-      ResourceProvider,
+      FormioResourceProvider,
       AppConfig,
       $injector
     ) {
@@ -38,7 +38,7 @@
 
       // Register all of the resources.
       angular.forEach(AppConfig.resources, function(resource, name) {
-        ResourceProvider.register(name, resource.form, $injector.get(resource.resource + 'Provider'));
+        FormioResourceProvider.register(name, resource.form, $injector.get(resource.resource + 'Provider'));
       });
 
       $urlRouterProvider.otherwise('/');
