@@ -4,9 +4,9 @@
   "main": "main.js",
   "scripts": {
     "test": "gulp test",
-    "pack": "npm run pack:osx && npm run pack:win",
-    "pack:osx": "gulp clean; gulp build; electron-packager ./ \"formioAppBasic\" --out=app/osx --platform=darwin --arch=x64 --version=0.37.5 --overwrite",
-    "pack:win": "gulp clean; gulp build; electron-packager ./ \"formioAppBasic\" --out=app/win --platform=win32 --arch=ia32 --version=0.37.5 --overwrite"
+    "pack": "gulp clean; gulp build; npm run pack:osx && npm run pack:win",
+    "pack:osx": "electron-packager ./ \"formioAppBasic\" --out=app/osx --platform=darwin --arch=x64 --version=0.37.5 --overwrite",
+    "pack:win": "electron-packager ./ \"formioAppBasic\" --out=app/win --platform=win32 --arch=ia32 --version=0.37.5 --overwrite"
   },
   "formio": {
     "docRoot": "dist"
