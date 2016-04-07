@@ -1,10 +1,7 @@
-/**
- *  Do not remove the comments below. It's the markers used by wiredep to inject
- *  sass dependencies when defined in the bower.json of your dependencies
- */
-// bower:scss
+@import "bower_components/bootswatch/cosmo/_variables.scss";
 @import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
-// endbower
+@import "bower_components/bootswatch/cosmo/_bootswatch.scss";
+@import "bower_components/font-awesome/scss/font-awesome.scss";
 
 .browsehappy {
   margin: 0.2em 0;
