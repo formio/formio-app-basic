@@ -1,6 +1,7 @@
 {
   "name": "formioAppBasic",
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "main": "main.js",
   "scripts": {
     "test": "gulp test"
   },
@@ -13,6 +14,7 @@
     "chalk": "~1.0.0",
     "concat-stream": "~1.5.0",
     "del": "~1.2.0",
+    "electron": "^0.4.1",
     "gulp": "~3.9.0",
     "gulp-angular-filesort": "~1.1.1",
     "gulp-angular-templatecache": "~1.6.0",
