@@ -101,7 +101,11 @@ gulp.task('views', function() {
 });
 
 gulp.task('clean', function (done) {
-  $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')], done);
+  $.del([
+    path.join(conf.paths.dist, '/'),
+    path.join(conf.paths.tmp, '/'),
+    path.join(conf.paths.app, '/')
+  ], done);
 });
 
 gulp.task('build', ['html', 'fonts', 'other', 'views', 'config']);

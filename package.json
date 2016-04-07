@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "main": "main.js",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "pack": "npm run pack:osx && npm run pack:win",
+    "pack:osx": "gulp clean; gulp build; electron-packager ./dist \"formioAppBasic\" --out=app/osx --platform=darwin --arch=x64 --version=0.37.5",
+    "pack:win": "gulp clean; gulp build; electron-packager ./dist \"formioAppBasic\" --out=app/win --platform=win32 --arch=ia32 --version=0.37.5"
   },
   "formio": {
     "docRoot": "dist"
