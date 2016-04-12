@@ -16,6 +16,7 @@ Installation
   - Install dependencies
     ```
     npm install
+    bower install
     ```
   - Run the application.
     ```
