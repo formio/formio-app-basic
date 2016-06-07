@@ -24,6 +24,7 @@
       AppConfig,
       $injector
     ) {
+      FormioProvider.setAppUrl(AppConfig.appUrl);
       FormioProvider.setBaseUrl(AppConfig.apiUrl);
       FormioAuthProvider.setForceAuth(true);
       FormioAuthProvider.setStates('auth.login', 'home');

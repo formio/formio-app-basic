@@ -9,7 +9,6 @@ angular.module('formioAppBasic').run([
     FormioAuth,
     AppConfig
   ) {
-
     // Initialize authentication.
     FormioAuth.init();
 
