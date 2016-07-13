@@ -6,5 +6,5 @@ coverage/
 .sass-cache/
 .idea/
 .tmp/
-dist/
 app/
+
