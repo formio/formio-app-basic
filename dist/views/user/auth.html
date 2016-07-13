@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="jumbotron">
+    <div class="row">
+      <div class="col-sm-6 text-center">
+        <p class="lead">
+          You can easily embed your Forms and Resources into this application using.
+        </p>
+        <div>
+          <pre>&lt;formio src="'https://yourapp.form.io/user/login'"&gt;&lt;/formio&gt;</pre>
+        </div>
+        <p class="lead">Need Help?</p>
+        <ul class="list-inline">
+          <li><a class="btn btn-lg btn-success" target="_blank" href="http://help.form.io/embedding/">Embedding</a></li>
+          <li><a class="btn btn-lg btn-success" target="_blank" href="http://help.form.io">Documentation</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <h4>Try out these forms...</h4>
+        <div class="panel panel-default">
+          <div class="panel-heading" style="padding-bottom: 0; border-bottom: none;">
+            <ul class="nav nav-tabs" style="border-bottom: none;">
+              <li role="presentation" ng-class="{active:isActive('auth.login')}"><a ui-sref="auth.login()">Login</a></li>
+              <li role="presentation" ng-class="{active:isActive('auth.register')}"><a ui-sref="auth.register()">Register</a></li>
+            </ul>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <div ui-view></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
