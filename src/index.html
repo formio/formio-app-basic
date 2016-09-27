@@ -50,7 +50,7 @@
       </div>
       <div id="content">
         <div class="row" ng-cloak>
-          <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.message}}</uib-alert>
+          <div uib-alert ng-repeat="alert in alerts" ng-class="'alert alert-' + alert.type" close="closeAlert($index)">{{alert.message}}</div>
         </div>
         <div ui-view></div>
       </div>
