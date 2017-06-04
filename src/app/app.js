@@ -15,6 +15,7 @@
     'FormioResourceProvider',
     'AppConfig',
     '$injector',
+    '$locationProvider',
     function(
       $stateProvider,
       $urlRouterProvider,
@@ -22,8 +23,10 @@
       FormioAuthProvider,
       FormioResourceProvider,
       AppConfig,
-      $injector
+      $injector,
+      $locationProvider
     ) {
+      $locationProvider.hashPrefix('');
       FormioProvider.setAppUrl(AppConfig.appUrl);
       FormioProvider.setBaseUrl(AppConfig.apiUrl);
       FormioAuthProvider.setForceAuth(true);
