@@ -8,6 +8,7 @@
     'ngFormioHelper'
   ])
   .config([
+    '$locationProvider',
     '$stateProvider',
     '$urlRouterProvider',
     'FormioProvider',
@@ -15,16 +16,15 @@
     'FormioResourceProvider',
     'AppConfig',
     '$injector',
-    '$locationProvider',
     function(
+      $locationProvider,
       $stateProvider,
       $urlRouterProvider,
       FormioProvider,
       FormioAuthProvider,
       FormioResourceProvider,
       AppConfig,
-      $injector,
-      $locationProvider
+      $injector
     ) {
       $locationProvider.hashPrefix('');
       FormioProvider.setAppUrl(AppConfig.appUrl);
